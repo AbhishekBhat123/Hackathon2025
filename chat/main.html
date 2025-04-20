@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>BBC Home Replica</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <style>
+    :root {
+      --primary-color: #cc0000;
+      --secondary-color: #a30000;
+      --light-bg: #f0f0f0;
+      --dark-text: #222;
+      --light-text: #666;
+      --card-bg: #ffffff;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: var(--light-bg);
+      color: var(--dark-text);
+    }
+
+    .container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-around;
+      max-width: 1200px;
+      margin: 20px auto;
+      padding: 20px;
+      background-color: var(--card-bg);
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+    }
+
+    .news-section {
+      width: 45%;
+      margin-bottom: 20px;
+      background-color: var(--card-bg);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+      padding: 20px;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .news-category a {
+      font-size: 1.3em;
+      font-weight: bold;
+      text-decoration: none;
+      color: var(--primary-color);
+    }
+
+    .news-item {
+      margin-top: 15px;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 15px;
+    }
+
+    .news-image img {
+      width: 100%;
+      height: auto;
+      border-radius: 5px;
+    }
+
+    .news-headline {
+      font-size: 1.1em;
+      font-weight: bold;
+      margin: 10px 0 5px;
+    }
+
+    .news-summary {
+      font-size: 0.95em;
+      color: var(--light-text);
+    }
+
+    #chatbot-icon {
+      position: fixed;
+      bottom: 80px;
+      right: 20px;
+      width: 56px;
+      height: 56px;
+      background-color: var(--primary-color);
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 50%;
+      font-size: 24px;
+      cursor: pointer;
+      z-index: 1000;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    #chatbot-icon:hover {
+      background-color: var(--secondary-color);
+    }
+
+    #chatbot-popup {
+      position: fixed;
+      bottom: 80px;
+      right: 20px;
+      width: 320px;
+      background-color: white;
+      border-radius: 12px;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+      display: none;
+      flex-direction: column;
+      overflow: hidden;
+      animation: fadeInUp 0.4s ease;
+      z-index: 1001;
+    }
+
+    @keyframes fadeInUp {
+      from { transform: translateY(30px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    .chatbot-header {
+      background-color: var(--primary-color);
+      color: white;
+      padding: 12px 16px;
+      font-weight: bold;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    #close-chatbot {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 18px;
+      cursor: pointer;
+    }
+
+    .chatbot-body {
+      padding: 12px;
+      max-height: 250px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .chatbot-input {
+      display: flex;
+      padding: 10px;
+      border-top: 1px solid #eee;
+      background-color: #fafafa;
+    }
+
+    #user-input {
+      flex-grow: 1;
+      padding: 10px 14px;
+      border: 1px solid #ccc;
+      border-radius: 20px;
+      outline: none;
+      font-size: 14px;
+    }
+
+    #send-btn {
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      padding: 10px;
+      margin-left: 10px;
+      cursor: pointer;
+    }
+
+    .bot-msg, .user-msg {
+      padding: 10px 14px;
+      border-radius: 16px;
+      max-width: 85%;
+      line-height: 1.4;
+    }
+
+    .bot-msg {
+      background-color: #f1f1f1;
+      align-self: flex-start;
+    }
+
+    .user-msg {
+      background-color: var(--primary-color);
+      color: white;
+      align-self: flex-end;
+    }
+
+    .trending-item {
+      margin-top: 5px;
+      background-color: #f9f9f9;
+      border-left: 4px solid var(--primary-color);
+      padding: 10px;
+      border-radius: 4px;
+    }
+
+    .trending-item h4 {
+      margin: 0 0 5px;
+      font-size: 1em;
+    }
+
+    .trending-item p {
+      font-size: 0.9em;
+      color: var(--light-text);
+    }
+
+    #scroll-top-btn {
+      position: fixed;
+      bottom: 140px;
+      right: 20px;
+      background-color: var(--primary-color);
+      color: white;
+      padding: 14px;
+      border-radius: 50%;
+      font-size: 20px;
+      cursor: pointer;
+      z-index: 1000;
+      display: none;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    #scroll-top-btn:hover {
+      background-color: var(--secondary-color);
+    }
+
+    @media screen and (max-width: 768px) {
+      .news-section { width: 100%; }
+      #chatbot-popup { right: 10px; width: 90%; }
+      #chatbot-icon, #scroll-top-btn { right: 10px; }
+      #scroll-top-btn { right: 80px; bottom: 110px; }
+    }
+
+    body.dark-mode {
+      background-color: #121212;
+      color: #f0f0f0;
+    }
+
+    body.dark-mode .news-section,
+    body.dark-mode .container,
+    body.dark-mode .chatbot-body,
+    body.dark-mode #chatbot-popup {
+      background-color: #1e1e1e;
+      color: #f0f0f0;
+    }
+
+    body.dark-mode .news-summary,
+    body.dark-mode .trending-item p {
+      color: #ccc;
+    }
+
+    body.dark-mode .news-headline,
+    body.dark-mode .news-category a {
+      color: #ff4c4c;
+    }
+
+    body.dark-mode .bot-msg {
+      background-color: #2b2b2b;
+      color: #f0f0f0;
+    }
+
+    body.dark-mode .user-msg {
+      background-color: #ff4c4c;
+      color: white;
+    }
+
+    body.dark-mode .chatbot-header {
+      background-color: #ff4c4c;
+    }
+
+    body.dark-mode .chatbot-input {
+      background-color: #2b2b2b;
+    }
+
+    body.dark-mode #scroll-top-btn,
+    body.dark-mode #chatbot-icon {
+      background-color: #ff4c4c;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- News Container -->
+  <div class="container" id="news-container">
+    <!-- News Sections -->
+    <section class="news-section">
+      <div class="news-category"><a href="#">US & Canada News</a></div>
+      <div class="news-item" data-trending="true" data-today="true">
+        <div class="news-image"><img src="https://via.placeholder.com/400x200?text=US+News" alt=""></div>
+        <h3 class="news-headline">Who is the man in middle of Maryland deportation case?</h3>
+        <p class="news-summary">Officials in the US and El Salvador have been unwilling to return the man home.</p>
+      </div>
+      <div class="news-item" data-trending="false" data-today="true">
+        <h3 class="news-headline">Menendez brothers' resentencing bid delayed</h3>
+        <p class="news-summary">Court delays the resentencing for the Menendez brothers after a contentious hearing.</p>
+      </div>
+    </section>
+
+    <section class="news-section">
+      <div class="news-category"><a href="#">World News</a></div>
+      <div class="news-item" data-trending="true" data-today="true">
+        <div class="news-image"><img src="https://via.placeholder.com/400x200?text=World+News" alt=""></div>
+        <h3 class="news-headline">One dead after protests against KFC in Pakistan</h3>
+        <p class="news-summary">Protesters, angry at Gaza war, claim KFC is symbol of the US and Israel.</p>
+      </div>
+    </section>
+
+    <section class="news-section">
+      <div class="news-category"><a href="#">Tech News</a></div>
+      <div class="news-item" data-trending="false" data-today="false">
+        <div class="news-image"><img src="https://via.placeholder.com/400x200?text=Tech+News" alt=""></div>
+        <h3 class="news-headline">AI startup raises $100M in new funding</h3>
+        <p class="news-summary">A Silicon Valley company secures massive investment for generative AI.</p>
+      </div>
+    </section>
+
+    <section class="news-section">
+      <div class="news-category"><a href="#">Sports News</a></div>
+      <div class="news-item" data-trending="true" data-today="false">
+        <div class="news-image"><img src="https://via.placeholder.com/400x200?text=Sports+News" alt=""></div>
+        <h3 class="news-headline">Champions League final set for epic showdown</h3>
+        <p class="news-summary">Top clubs clash in Istanbul for the biggest match of the year.</p>
+      </div>
+    </section>
+  </div>
+
+  <!-- Chatbot UI -->
+  <div id="chatbot-icon"><i class="fas fa-comment-dots"></i></div>
+  <div id="chatbot-popup">
+    <div class="chatbot-header">
+      <span>Chat with us</span>
+      <button id="close-chatbot">&times;</button>
+    </div>
+    <div class="chatbot-body" id="chat-area">
+      <div class="bot-msg">👋 Hello! How can I help you today?</div>
+    </div>
+    <div class="chatbot-input">
+      <input type="text" id="user-input" placeholder="Type your message..." />
+      <button id="send-btn"><i class="fas fa-paper-plane"></i></button>
+    </div>
+  </div>
+
+  <!-- Scroll to Top -->
+  <div id="scroll-top-btn" title="Back to top"><i class="fas fa-arrow-up"></i></div>
+
+  <!-- Modal for news details -->
+  <div id="news-modal" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); background:white; padding:20px; border-radius:10px; box-shadow:0 10px 20px rgba(0,0,0,0.3); z-index:2000; max-width:90%; max-height:80%; overflow-y:auto;">
+    <button id="close-modal" style="float:right; background:none; border:none; font-size:20px; cursor:pointer;">&times;</button>
+    <div id="modal-content"></div>
+  </div>
+
+  <!-- JavaScript -->
+  <script>
+    $(function () {
+    
+      $('#chatbot-icon').click(() => $('#chatbot-popup').fadeToggle());
+      $('#close-chatbot').click(() => $('#chatbot-popup').fadeOut());
+
+      $('.news-item').on('click', function () {
+        const headline = $(this).find('.news-headline').text();
+        const summary = $(this).find('.news-summary').text();
+        const imageSrc = $(this).find('img').attr('src') || '';
+        const content = `<h2>${headline}</h2>${imageSrc ? `<img src="${imageSrc}" style="width:100%; margin-bottom:10px;" />` : ''}<p>${summary}</p>`;
+        $('#modal-content').html(content);
+        $('#news-modal').fadeIn();
+      });
+
+      $('#close-modal').click(() => $('#news-modal').fadeOut());
+
+      function showTodaysNewsInChatbot() {
+        const todaysHTML = `
+          <div class="trending-item"><h4>Who is the man in middle of Maryland deportation case?</h4><p>Officials in the US and El Salvador have been unwilling to return the man home.</p></div>
+          <div class="trending-item"><h4>Menendez brothers' resentencing bid delayed</h4><p>Contentious hearing leads to delay.</p></div>
+          <div class="trending-item"><h4>One dead after protests against KFC in Pakistan</h4><p>KFC protests escalate amid Gaza tensions.</p></div>
+        `;
+        $('#chat-area').append(`<div class="bot-msg">${todaysHTML}</div>`);
+      }
+
+      function getVisibleNewsText() {
+        let text = '';
+        $('.news-item:visible').each(function () {
+          const headline = $(this).find('.news-headline').text();
+          const summary = $(this).find('.news-summary').text();
+          text += `${headline}. ${summary}. `;
+        });
+        return text.trim();
+      }
+
+      function speakText(text, voice) {
+        const synth = window.speechSynthesis;
+        const utter = new SpeechSynthesisUtterance(text);
+        utter.voice = voice;
+        synth.cancel();
+        synth.speak(utter);
+      }
+
+      function showVoiceOptions() {
+        const voices = speechSynthesis.getVoices().slice(0, 4);
+        if (voices.length === 0) {
+          setTimeout(showVoiceOptions, 200);
+          return;
+        }
+        let html = '<div class="bot-msg">Choose a voice to read the news:</div>';
+        voices.forEach((v, i) => {
+          html += `<button class="voice-btn" data-index="${i}" style="margin:5px; padding:6px 10px; border:none; border-radius:4px; background:#cc0000; color:white; cursor:pointer;">${v.name}</button>`;
+        });
+        $('#chat-area').append(html);
+        $('#chat-area').scrollTop($('#chat-area')[0].scrollHeight);
+        $('.voice-btn').click(function () {
+          const index = $(this).data('index');
+          speakText(getVisibleNewsText(), voices[index]);
+        });
+      }
+
+      function sendMessage() {
+        const userMessage = $('#user-input').val().trim();
+        if (userMessage !== '') {
+          $('#chat-area').append(`<div class="user-msg">${userMessage}</div>`);
+          $('#user-input').val('');
+          $('#chat-area').scrollTop($('#chat-area')[0].scrollHeight);
+          const msg = userMessage.toLowerCase();
+
+          if (msg.includes("explain today's news")) {
+            $('#chat-area').append(`<div class="bot-msg">Here are today's news:</div>`);
+            showTodaysNewsInChatbot();
+          } else if (msg.includes("trending news")) {
+            $('#chat-area').append(`<div class="bot-msg">Redirecting you to today's trending news...</div>`);
+            $('.news-item').hide();
+            $('.news-item[data-trending="true"]').show();
+          } else if (msg.includes("show all news")) {
+            $('#chat-area').append(`<div class="bot-msg">Showing all news articles.</div>`);
+            $('.news-item').show();
+          } else if (msg.includes("activate dark mode")) {
+            $('body').addClass('dark-mode');
+            $('#chat-area').append(`<div class="bot-msg">🌙 Dark mode activated!</div>`);
+          } else if (msg.includes("deactivate dark mode") || msg.includes("light mode")) {
+            $('body').removeClass('dark-mode');
+            $('#chat-area').append(`<div class="bot-msg">☀️ Light mode activated!</div>`);
+          } else if (msg.includes("read mode")) {
+            showVoiceOptions();
+          } else {
+            $('#chat-area').append(`<div class="bot-msg">Sorry, I don't have an answer for that. 😕</div>`);
+          }
+
+          $('#chat-area').scrollTop($('#chat-area')[0].scrollHeight);
+        }
+      }
+
+      $('#send-btn').click(() => sendMessage());
+      $('#user-input').keypress(e => {
+        if (e.which === 13) sendMessage();
+      });
+
+      $(window).scroll(function () {
+        if ($(this).scrollTop() > 100) {
+          $('#scroll-top-btn').fadeIn();
+        } else {
+          $('#scroll-top-btn').fadeOut();
+        }
+      });
+
+      $('#scroll-top-btn').click(() => $('html, body').animate({ scrollTop: 0 }, 500));
+    });
+  </script>
+</body>
+</html>
+
+
+
+<!-- commands includes
+ Typing "trending news" will filter and show only today's news on the main UI .
+
+Typing "explain today's news" will show those same today's news inside the chatbot itself.
+
+I also added an optional "show all news" command to reset the full news list.
+
+"Activate dark mode" → the site will switch to dark mode.
+
+"Deactivate dark mode" or "Light mode" → it switches back to the default. -->

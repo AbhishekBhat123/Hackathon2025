@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>News and Discover Sections</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+    .discover-more-section {
+        padding: 20px;
+        background-color: #fff; 
+        border-bottom: 1px solid #444; 
+    }
+    
+    .discover-more-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+        padding-bottom: 10px;
+    }
+    
+    .discover-more-header h3 {
+        margin: 0;
+        font-size: 1.2em;
+        font-weight: normal;
+        color: black;
+    }
+    
+    .navigation-arrows .arrow {
+        background: none;
+        border: none;
+        color: #fff;
+        font-size: 1.2em;
+        cursor: pointer;
+        margin-left: 10px;
+        padding: 5px;
+    }
+    
+    .navigation-arrows .arrow:hover {
+        color: #ccc;
+    }
+    .carousel-container {
+        display: flex;
+        overflow-x: auto; 
+        scroll-behavior: smooth; 
+        -webkit-overflow-scrolling: touch; 
+        scrollbar-width: none; 
+        -ms-overflow-style: none;  
+    }
+    
+    .carousel-container::-webkit-scrollbar {
+        display: none;
+    }
+    
+    
+    .discover-card {
+        flex: 0 0 250px; 
+        margin-right: 15px; 
+        background-color: #333; 
+        border-radius: 5px;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        cursor: pointer; 
+    }
+    
+    .discover-card:hover {
+        background-color: #444; 
+    }
+    
+    
+    .discover-card img {
+        width: 100%;
+        height: 150px;  
+        object-fit: cover;  
+    }
+    
+    .card-content {
+        padding: 10px;
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;  
+    }
+    
+    .card-content h4 {
+        margin: 0 0 5px 0;
+        font-size: 1em;
+        font-weight: bold;
+        color: #fff;
+    }
+    
+    .card-content p {
+        margin: 0;
+        font-size: 0.9em;
+        color: #ccc;
+        line-height: 1.4;
+    } 
+    .more-news-section {
+        padding: 15px 20px; 
+        background-color: #1a1a1a;  
+        border-bottom: 1px solid #444; 
+    }
+    
+    .more-news-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+    
+    .more-news-header h3 {
+        margin: 0;
+        font-size: 0.9em; 
+        font-weight: bold;
+        color: #ccc;  
+    }
+    
+    .more-news-link {
+        color: #fff; 
+        text-decoration: none;
+        font-size: 1.2em;  
+        padding: 5px; 
+    }
+    
+    .more-news-link:hover {
+        color: #ccc;
+    }
+    
+    
+    .news-headlines {
+        display: flex;  
+        flex-wrap: wrap; 
+        gap: 15px;  
+    }
+    
+    .news-item {
+        flex: 1 1 200px;  
+        min-width: 150px; 
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .news-item a {
+        color: #fff; 
+        text-decoration: none;
+        font-size: 1em;
+        margin-bottom: 5px;
+    }
+    
+    .news-item a:hover {
+        text-decoration: underline;
+    }
+    
+    .news-meta {
+        font-size: 0.8em;  
+        color: #666;  
+    }
+     
+    .editor-picks-section {
+        padding: 20px;
+        background-color: #282828;  
+    }
+    
+    .editor-picks-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+        border-bottom: 1px solid #444;  
+        padding-bottom: 10px;
+    }
+    
+    .editor-picks-header h2 {
+        margin: 0;
+        font-size: 1.2em;
+        font-weight: normal;
+    }
+    
+    
+    .editor-picks-carousel {  
+        display: flex;
+        overflow-x: auto;  
+        scroll-behavior: smooth;  
+        -webkit-overflow-scrolling: touch;  
+        scrollbar-width: none;  
+        -ms-overflow-style: none; 
+    }
+    
+    
+    .carousel-item {  
+        flex: 0 0 200px;  
+        margin-right: 15px;  
+        background-color: #333;  
+        border-radius: 5px;
+        overflow: hidden; 
+        display: flex;
+        flex-direction: column;
+        padding-bottom: 10px; 
+        cursor: pointer;  
+    }
+    
+    .carousel-item:hover {
+         background-color: #444; 
+    }
+    
+    .item-thumbnail {
+        position: relative;
+        width: 100%;
+        padding-top: 56.25%; 
+        overflow: hidden;
+    }
+    
+    .item-thumbnail img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover; 
+    }
+    
+    .play-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5); 
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #fff;
+        font-size: 2em;
+        opacity: 1;  
+        transition: opacity 0.3s ease;
+    }
+     
+    .item-title {
+        padding: 10px 10px 5px 10px;  
+        margin: 0;
+        font-size: 0.9em;
+        color: #ccc;
+    }
+    
+    .item-meta {  
+        padding: 0 10px; 
+        margin: 0;
+        font-size: 0.8em;
+        color: #aaa; 
+    }</style>
+</head>
+<body>
+
+    <section class="discover-more-section">
+        <div class="discover-more-header">
+            <h3>DISCOVER MORE FROM THE BBC</h3>
+            <div class="navigation-arrows discover-arrows">
+                <button class="arrow left-arrow"><i class="fas fa-chevron-left"></i></button>
+                <button class="arrow right-arrow"><i class="fas fa-chevron-right"></i></button>
+            </div>
+        </div>
+
+        <div class="discover-carousel carousel-container"> <div class="discover-card">
+                <img src="https://th.bing.com/th/id/OIP.YaXXqsxPS4jKPn1XN86YhAHaEU?rs=1&pid=ImgDetMain" alt="Royal Watch">
+                <div class="card-content">
+                    <h4>Royal Watch</h4>
+                    <p>The full story on the Royal Family, in your inbox every Thursday.</p>
+                </div>
+            </div>
+            <div class="discover-card">
+                <img src="https://thumbs.dreamstime.com/b/bbc-news-mobile-logo-app-screen-smartphone-iphone-airpods-closeup-operational-business-division-british-246016428.jpg" alt="Download the BBC app">
+                <div class="card-content">
+                    <h4>Download the BBC app</h4>
+                    <p>Click here to download the BBC app for Apple and Android devices.</p>
+                </div>
+            </div>
+             <div class="discover-card">
+                <img src="https://th.bing.com/th/id/OIP.VozCEGYS1lfYu17519NCRgHaE0?rs=1&pid=ImgDetMain" alt="Subscribe to Football Extra">
+                <div class="card-content">
+                    <h4>Subscribe to Football Extra</h4>
+                    <p>The latest news, insights and gossip from the Premier League, direct to your inbox every weekday from ex player Pat Nevin and the wider BBC Sport squad.</p>
+                </div>
+            </div>
+             <div class="discover-card">
+                <img src="https://wallpapers.com/images/hd/bbc-pictures-45kdfbm1njg7ovuu.jpg" alt="Register for a BBC account">
+                <div class="card-content">
+                    <h4>Register for a BBC account</h4>
+                    <p>Don't have time to read everything right now? Your BBC account lets you save articles and videos for later.</p>
+                </div>
+            </div>
+             <div class="discover-card">
+                <img src="https://www.google.com/url?sa=i&url=https%3A%2F%2Fin.pinterest.com%2Fpin%2Fsubscribe-button-red-with-bell-youtube-png-and-psd--675258537902570680%2F&psig=AOvVaw0TyvR99Wq7Mzgef8FMMbCL&ust=1745256628397000&source=images&cd=vfe&opi=89978449&ved=0CBEQjRxqFwoTCKDTp9mR54wDFQAAAAAdAAAAABAE" alt="Subscribe to ..."> <div class="card-content">
+                    <h4>Subscribe to the ...</h4>
+                    <p>The week's best fr... BBC editors, in yo... Tuesday and Frid...</p> </div>
+            </div>
+            <div class="discover-card">
+                <img src="https://th.bing.com/th/id/OIP.YaXXqsxPS4jKPn1XN86YhAHaEU?rs=1&pid=ImgDetMain" alt="Royal Watch">
+                <div class="card-content">
+                    <h4>Another Royal Watch</h4>
+                    <p>More details about the Royal Family.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="more-news-section">
+        <div class="more-news-header">
+            <h3>MORE NEWS</h3>
+            <a href="#" class="more-news-link"><span>></span></a>
+        </div>
+        <div class="news-headlines">
+            <div class="news-item">
+                <a href="#">Pakistan expels tens of thousands of Afghans</a>
+                <div class="news-meta">22 hrs ago | Asia</div>
+            </div>
+            <div class="news-item">
+                <a href="#">India's sword-wielding grandmother still going strong at 82</a>
+                 <div class="news-meta">13 hrs ago | Asia</div>
+            </div>
+             <div class="news-item">
+                <a href="#">Designed in US, made in China: Why Apple is stuck</a>
+                 <div class="news-meta">2 days ago | Asia</div>
+            </div>
+             <div class="news-item">
+                <a href="#">Inside the rural Texas town where Elon Musk is basing his business empire</a>
+                 <div class="news-meta">13 hrs ago | US & Canada</div>
+            </div>
+             <div class="news-item">
+                <a href="#">Police algorithm said Lina was at 'medium' risk. Then she was killed</a>
+                 <div class="news-meta">14 hrs ago | Europe</div>
+            </div>
+            </div>
+    </section>
+
+    <section class="editor-picks-section">
+        <div class="editor-picks-header">
+            <h2>EDITOR'S PICKS</h2>
+            <div class="navigation-arrows editor-arrows"> <button class="arrow left-arrow"><i class="fas fa-chevron-left"></i></button>
+                <button class="arrow right-arrow"><i class="fas fa-chevron-right"></i></button>
+            </div>
+        </div>
+
+        <div class="editor-picks-carousel carousel-container"> <div class="carousel-item">
+                <div class="item-thumbnail">
+                    <img src="https://img-s-msn-com.akamaized.net/tenant/amp/entityid/AA1DghAA.img?w=768&h=432&m=6&x=523&y=135&s=165&d=165" alt="Image 1">
+                    <div class="play-overlay">
+                        <i class="fas fa-play"></i>
+                    </div>
+                </div>
+                <p class="item-title">I never told</p>
+                <div class="item-meta">1 hour ago | World</div> </div>
+            <div class="carousel-item">
+                <div class="item-thumbnail">
+                    <img src="https://img-s-msn-com.akamaized.net/tenant/amp/entityid/AA1DghAA.img?w=768&h=432&m=6&x=523&y=135&s=165&d=165" alt="Image 2">
+                    <div class="play-overlay">
+                         <i class="fas fa-play"></i>
+                    </div>
+                </div>
+                <p class="item-title">The moment a python is captured</p>
+                <div class="item-meta">3 hours ago | Animals</div> </div>
+             <div class="carousel-item">
+                <div class="item-thumbnail">
+                    <img src="https://www.bing.com/th/id/OIP.SQQFm-oK6Lu_eMaiGGRI1AHaE8?w=219&h=211&c=8&rs=1&qlt=90&o=6&pid=3.1&rm=2" alt="Image 3">
+                    <div class="play-overlay">
+                         <i class="fas fa-play"></i>
+                    </div>
+                </div>
+                <p class="item-title">Mum saves baby seal with a clever trick</p>
+                 <div class="item-meta">5 hours ago | Animals</div> </div>
+             <div class="carousel-item">
+                <div class="item-thumbnail">
+                    <img src="https://th.bing.com/th/id/OIP.x9jTF5jy8Z-OOvyBfTaoFAHaE8?rs=1&pid=ImgDetMain" alt="Image 4">
+                    <div class="play-overlay">
+                         <i class="fas fa-play"></i>
+                    </div>
+                </div>
+                <p class="item-title">Explore the tiny biodegradable pacemaker for newborns</p>
+                 <div class="item-meta">8 hours ago | Health</div> </div>
+             <div class="carousel-item">
+                <div class="item-thumbnail">
+                    <img src="https://th.bing.com/th/id/OIP.jFg3hTOriaATAoFmZlqNTQHaEo?rs=1&pid=ImgDetMain" alt="Image 5">
+                    <div class="play-overlay">
+                         <i class="fas fa-play"></i>
+                    </div>
+                </div>
+                <p class="item-title">Watch the dramatic escape of tiny fish from deadly sharks</p>
+                 <div class="item-meta">10 hours ago | Science</div> </div>
+            <div class="carousel-item">
+                <div class="item-thumbnail">
+                    <img src="https://th.bing.com/th/id/OIP.x9jTF5jy8Z-OOvyBfTaoFAHaE8?rs=1&pid=ImgDetMain" alt="Image 1">
+                    <div class="play-overlay">
+                        <i class="fas fa-play"></i>
+                    </div>
+                </div>
+                <p class="item-title">Another Item 1</p>
+                <div class="item-meta">12 hours ago | Category</div> </div>
+            <div class="carousel-item">
+                <div class="item-thumbnail">
+                    <img src="assets/images/bbcpodcast.webp" alt="Image 2">
+                    <div class="play-overlay">
+                         <i class="fas fa-play"></i>
+                    </div>
+                </div>
+                <p class="item-title">Another Item 2</p>
+                 <div class="item-meta">1 day ago | Category</div> </div>
+             <div class="carousel-item">
+                <div class="item-thumbnail">
+                    <img src="assets/images/soundwave.png" alt="Image 3">
+                    <div class="play-overlay">
+                         <i class="fas fa-play"></i>
+                    </div>
+                </div>
+                <p class="item-title">Another Item 3</p>
+                 <div class="item-meta">2 days ago | Category</div> </div>
+        </div>
+    </section>
+
+    <script>
+        function setupCarouselScrolling(carouselSelector, prevArrowSelector, nextArrowSelector, itemSelector) {
+            const carousel = document.querySelector(carouselSelector);
+            const prevArrow = document.querySelector(prevArrowSelector);
+            const nextArrow = document.querySelector(nextArrowSelector);
+        
+            if (!carousel || !prevArrow || !nextArrow) {
+                console.error(`Could not find carousel elements for selectors: ${carouselSelector}, ${prevArrowSelector}, ${nextArrowSelector}`);
+                return;
+            }
+        
+            const firstItem = carousel.querySelector(itemSelector);
+            if (!firstItem) {
+                 console.error(`No items found in carousel: ${itemSelector}`);
+                 return;
+            }
+        
+            const itemWidth = firstItem.offsetWidth;
+            const itemMarginRight = parseInt(window.getComputedStyle(firstItem).marginRight);
+            const scrollDistance = itemWidth + itemMarginRight;
+        
+            nextArrow.addEventListener('click', () => {
+                carousel.scrollBy({
+                    left: scrollDistance * 3, 
+                    behavior: 'smooth'
+                });
+            });
+        
+            prevArrow.addEventListener('click', () => {
+                carousel.scrollBy({
+                    left: -scrollDistance * 3, 
+                    behavior: 'smooth'
+                });
+            });
+        
+        }
+        
+        setupCarouselScrolling(
+            '.discover-carousel',
+            '.discover-arrows .left-arrow',
+            '.discover-arrows .right-arrow',
+            '.discover-card'  
+        ); 
+        setupCarouselScrolling(
+            '.editor-picks-carousel',
+            '.editor-arrows .left-arrow',
+            '.editor-arrows .right-arrow',
+            '.carousel-item'  
+        );</script>
+</body>
+</html>

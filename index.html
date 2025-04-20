@@ -2,204 +2,319 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>BBC UI Clone</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>BBC Home Replica</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <style>
-    * {
+    :root {
+      --primary-color: #cc0000;
+      --secondary-color: #a30000;
+      --light-bg: #f0f0f0;
+      --dark-text: #222;
+      --light-text: #666;
+      --card-bg: #ffffff;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: Arial, sans-serif;
       margin: 0;
       padding: 0;
-      box-sizing: border-box;
-      font-family: 'Inter', sans-serif;
+      background-color: var(--light-bg);
+      color: var(--dark-text);
     }
-    body {
-      background: #fff;
-      color: #000;
+
+    .news-section {
+      width: 45%;
+      margin: 20px auto;
+      padding: 20px;
+      background-color: var(--card-bg);
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.05);
     }
-    header {
-      display: flex;
-      flex-direction: column;
-      border-bottom: 1px solid #ccc;
+
+    .news-image img {
+      width: 100%;
+      border-radius: 6px;
     }
-    .top-bar {
-      position: relative;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 10px 20px;
-    }
-    .top-bar .left {
-      display: flex;
-      align-items: center;
-      gap: 15px;
-    }
-    .top-bar .left span {
-      font-size: 24px;
-      cursor: pointer;
-    }
-    .top-bar .logo-container {
-      position: absolute;
-      left: 50%;
-      transform: translateX(-50%);
-    }
-    .top-bar .logo-container img {
-      height: 100px;
-    }
-    .top-bar .right {
-      display: flex;
-      gap: 15px;
-      align-items: center;
-    }
-    .top-bar .right button {
-      background: #000;
-      color: #fff;
-      border: none;
-      padding: 5px 15px;
+
+    .news-headline {
       font-weight: bold;
-      cursor: pointer;
+      margin: 10px 0 5px;
+      font-size: 1.2em;
     }
-    .nav {
+
+    .news-summary {
+      color: var(--light-text);
+    }
+
+    /* Chatbot */
+    #chatbot-icon {
+      position: fixed;
+      bottom: 80px;
+      right: 20px;
+      width: 56px;
+      height: 56px;
+      background-color: var(--primary-color);
+      color: white;
       display: flex;
       justify-content: center;
-      gap: 20px;
-      padding: 10px 0;
-      border-top: 1px solid #eee;
-      border-bottom: 2px solid #000;
-      flex-wrap: wrap;
+      align-items: center;
+      border-radius: 50%;
+      font-size: 24px;
+      cursor: pointer;
+      z-index: 1000;
     }
-    .nav a {
-      text-decoration: none;
-      color: #000;
-      font-weight: 500;
-      padding: 5px 0;
+
+    #chatbot-popup {
+      position: fixed;
+      bottom: 80px;
+      right: 20px;
+      width: 320px;
+      background-color: white;
+      border-radius: 12px;
+      display: none;
+      flex-direction: column;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+      z-index: 1001;
     }
-    .nav a.active {
-      border-bottom: 3px solid #000;
-    }
-    .main-content {
-      display: grid;
-      grid-template-columns: 1fr 2fr 1fr;
-      gap: 20px;
-      padding: 20px;
-    }
-    .left, .right {
+
+    .chatbot-header {
+      background-color: var(--primary-color);
+      color: white;
+      padding: 12px;
+      font-weight: bold;
       display: flex;
-      flex-direction: row;
-      gap: 20px;
+      justify-content: space-between;
     }
-    .center img {
-      width: 100%;
-      height: auto;
-    }
-    .news-card img {
-      width: 100%;
-      height: auto;
-    }
-    .news-card {
-      border-bottom: 1px solid #ddd;
-      padding-bottom: 10px;
-    }
-    .news-card h3 {
-      margin: 10px 0 5px;
+
+    #close-chatbot {
+      background: none;
+      border: none;
+      color: white;
       font-size: 18px;
+      cursor: pointer;
     }
-    .news-card p {
-      font-size: 14px;
-      color: #555;
+
+    .chatbot-body {
+      padding: 12px;
+      max-height: 250px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
     }
-    .timestamp {
-      font-size: 12px;
-      color: #999;
-      margin-top: 5px;
+
+    .chatbot-input {
+      display: flex;
+      padding: 10px;
+      border-top: 1px solid #eee;
+      background-color: #fafafa;
     }
-    footer {
+
+    #user-input {
+      flex-grow: 1;
+      padding: 10px 14px;
+      border: 1px solid #ccc;
+      border-radius: 20px;
+      outline: none;
+    }
+
+    #send-btn {
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      padding: 10px;
+      margin-left: 10px;
+      cursor: pointer;
+    }
+
+    .bot-msg, .user-msg {
+      padding: 10px 14px;
+      border-radius: 16px;
+      max-width: 85%;
+    }
+
+    .bot-msg {
+      background-color: #f1f1f1;
+      align-self: flex-start;
+    }
+
+    .user-msg {
+      background-color: var(--primary-color);
+      color: white;
+      align-self: flex-end;
+    }
+
+    #scroll-top-btn {
+      position: fixed;
+      bottom: 140px;
+      right: 20px;
+      background-color: var(--primary-color);
+      color: white;
+      padding: 14px;
+      border-radius: 50%;
+      font-size: 20px;
+      cursor: pointer;
+      z-index: 1000;
+      display: none;
+    }
+
+    /* Dark Mode */
+    body.dark-mode {
+      background-color: #121212;
+      color: #f0f0f0;
+    }
+
+    body.dark-mode .news-section {
+      background-color: #1e1e1e;
+    }
+
+    body.dark-mode .news-summary {
+      color: #ccc;
+    }
+
+    body.dark-mode .bot-msg {
+      background-color: #2b2b2b;
+      color: #f0f0f0;
+    }
+
+    body.dark-mode .user-msg {
+      background-color: #ff4c4c;
+    }
+
+    body.dark-mode .chatbot-header,
+    body.dark-mode #chatbot-icon,
+    body.dark-mode #scroll-top-btn {
+      background-color: #ff4c4c;
+    }
+
+    .footerend {
       text-align: center;
       padding: 20px;
       font-size: 14px;
       color: #aaa;
     }
+
+    @media screen and (max-width: 768px) {
+      .news-section { width: 90%; }
+      #chatbot-popup { width: 90%; right: 10px; }
+      #chatbot-icon, #scroll-top-btn { right: 10px; }
+    }
   </style>
 </head>
 <body>
-  <header>
-    <div class="top-bar">
-      <div class="left">
-        <!-- <span>&#9776;</span>
-        <span>&#128269;</span> -->
-        <i class="fas fa-bars"></i>  
-        <i class="fas fa-search"></i>  
-      </div>
 
-      <div class="logo-container">
-        <img src="assets/images/bbc-2-logo-png-transparent.png" alt="BBC Logo">
-      </div>
+  <!-- Dynamic Sections -->
+  <div id="f1-content"></div>
+  <div id="h2-content"></div>
+  <div id="d1"></div>
+  <div id="tech-content"></div>
+  <div id="vp3-content"></div>
+  <div id="editor"></div>
+  <div id="footer-content"></div>
 
-      <div class="right">
-        <button>Register</button>
-        <span>Sign In</span>
-      </div>
+  <!-- Footer -->
+  <div class="footerend">
+    &copy; 2025 BBC News Clone - Created for Educational Purposes
+  </div>
+
+  <!-- Chatbot -->
+  <div id="chatbot-icon"><i class="fas fa-comment-dots"></i></div>
+  <div id="chatbot-popup">
+    <div class="chatbot-header">
+      Chat with us
+      <button id="close-chatbot">&times;</button>
     </div>
-
-    <nav class="nav">
-      <a href="#" class="active">Home</a>
-      <a href="#">News</a>
-      <a href="#">Sport</a>
-      <a href="#">Business</a>
-      <a href="#">Innovation</a>
-      <a href="#">Culture</a>
-      <a href="#">Arts</a>
-      <a href="#">Travel</a>
-      <a href="#">Earth</a>
-      <a href="#">Audio</a>
-      <a href="#">Video</a>
-      <a href="#">Live</a>
-    </nav>
-  </header>
-
-  <div class="main-content">
-    <div class="left">
-      <div class="news-card">
-        <img src="assets/images/b67a7f40-1c2e-11f0-b1b3-7358f8d35a35.jpg.webp" alt="Meeting">
-        <h3>US senator meets man mistakenly deported to El Salvador</h3>
-        <p>But Salvadoran President Bukele says Kilmar Ábrego García - who is at the centre of a US court battle - will stay in custody.</p>
-        <div class="timestamp">3 hrs ago | World</div>
-      </div>
-      <div class="news-card">
-        <img src="assets/images/b67a7f40-1c2e-11f0-b1b3-7358f8d35a35.jpg.webp" alt="Military">
-        <h3>US will 'move on' from Ukraine peace talks if no progress soon</h3>
-        <p>The US Secretary of State's comments come as Ukraine says it took a first step towards signing a minerals deal with the US.</p>
-        <div class="timestamp">34 mins ago | World</div>
-      </div>
+    <div class="chatbot-body" id="chat-area">
+      <div class="bot-msg">👋 Hello! How can I help you today?</div>
     </div>
-
-    <div class="center">
-      <img src="assets/images/b67a7f40-1c2e-11f0-b1b3-7358f8d35a35.jpg.webp" alt="Headline" />
-      <h2 style="margin: 15px 0; font-size: 24px;">US will 'move on' from Ukraine peace talks if no progress soon</h2>
-      <p style="font-size: 16px; color: #333;">The US Secretary of State's comments come as Ukraine says it took a first step towards signing a minerals deal with the US.</p>
-    </div>
-
-    <div class="right">
-      <div class="news-card">
-        <h3>Five takeaways from Canada party leaders' big TV debate</h3>
-        <p>There were two ghosts in the room during Canada's federal election debate - Justin Trudeau and Donald Trump.</p>
-        <div class="timestamp">3 hrs ago | US & Canada</div>
-      </div>
-      <div class="news-card">
-        <h3>'My home is worth millions, but my kids can't afford to live here'</h3>
-        <p>Housing has taken a back seat in Canada's election to Donald Trump's tariffs, but advocates argue the affordability crisis is just as disruptive.</p>
-        <div class="timestamp">13 hrs ago | US & Canada</div>
-      </div>
-      <div class="news-card">
-        <h3>Watch: Olympic legend leaves parents in her dust at school sports day</h3>
-        <p>The third-fastest woman in history, Shelly-Ann Fraser-Pryce, took part in sports day at her son's school in Jamaica.</p>
-        <div class="timestamp">3 hrs ago | Latin America</div>
-      </div>
+    <div class="chatbot-input">
+      <input type="text" id="user-input" placeholder="Type your message..." />
+      <button id="send-btn"><i class="fas fa-paper-plane"></i></button>
     </div>
   </div>
 
-  <footer>
-    &copy; 2025 BBC News Clone - Created for Educational Purposes
-  </footer>
+  <!-- Scroll to Top -->
+  <div id="scroll-top-btn"><i class="fas fa-arrow-up"></i></div>
+
+  <!-- Script -->
+  <script>
+    $(function () {
+      // Load components
+      $('#f1-content').load('nav.html');
+      $('#h2-content').load('secnd.html');
+      $('#d1').load('third.html');
+      $('#vp3-content').load('vp3.html');
+      $('#tech-content').load('t1.html');
+      $('#editor').load('e1.html');
+      $('#footer-content').load('footer.html');
+
+      const synth = window.speechSynthesis;
+
+      $('#chatbot-icon').click(() => $('#chatbot-popup').fadeToggle());
+      $('#close-chatbot').click(() => $('#chatbot-popup').fadeOut());
+
+      function sendMessage() {
+        const userMessage = $('#user-input').val().trim();
+        if (userMessage !== '') {
+          $('#chat-area').append(`<div class="user-msg">${userMessage}</div>`);
+          $('#user-input').val('');
+          $('#chat-area').scrollTop($('#chat-area')[0].scrollHeight);
+          const msg = userMessage.toLowerCase();
+
+          if (msg.includes("dark mode")) {
+            $('body').addClass('dark-mode');
+            $('#chat-area').append(`<div class="bot-msg">🌙 Dark mode activated!</div>`);
+          } else if (msg.includes("light mode")) {
+            $('body').removeClass('dark-mode');
+            $('#chat-area').append(`<div class="bot-msg">☀️ Light mode activated!</div>`);
+          } else if (msg.includes("read headlines")) {
+            const headlines = $('h3').map(function () {
+              return $(this).text();
+            }).get().join('. ');
+            const utter = new SpeechSynthesisUtterance(headlines);
+            synth.cancel();
+            synth.speak(utter);
+            $('#chat-area').append(`<div class="bot-msg">🗣 Reading headlines...</div>`);
+          } else if (msg.includes("read everything")) {
+            const everything = $('.news-section:visible').map(function () {
+              const headline = $(this).find('h3').text();
+              const summary = $(this).find('p').text();
+              return headline + ". " + summary;
+            }).get().join('. ');
+            const utter = new SpeechSynthesisUtterance(everything);
+            synth.cancel();
+            synth.speak(utter);
+            $('#chat-area').append(`<div class="bot-msg">📢 Reading everything...</div>`);
+          } else if (msg.includes("stop reading")) {
+            synth.cancel();
+            $('#chat-area').append(`<div class="bot-msg">🛑 Stopped reading.</div>`);
+          } else {
+            $('#chat-area').append(`<div class="bot-msg">Sorry, I don’t understand that. Try "read headlines", "dark mode", etc.</div>`);
+          }
+
+          $('#chat-area').scrollTop($('#chat-area')[0].scrollHeight);
+        }
+      }
+
+      $('#send-btn').click(() => sendMessage());
+      $('#user-input').keypress(e => { if (e.which === 13) sendMessage(); });
+
+      // Scroll to top
+      $(window).scroll(() => {
+        if ($(this).scrollTop() > 100) {
+          $('#scroll-top-btn').fadeIn();
+        } else {
+          $('#scroll-top-btn').fadeOut();
+        }
+      });
+
+      $('#scroll-top-btn').click(() => $('html, body').animate({ scrollTop: 0 }, 500));
+    });
+  </script>
 </body>
 </html>

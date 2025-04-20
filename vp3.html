@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BBC Home - Breaking News</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>* {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: Arial, Helvetica, sans-serif;
+    }
+    
+    body {
+        background-color: #fff;
+        color: #121212;
+        line-height: 1.5;
+    }
+    
+    /* Header Styles */
+    header {
+        width: 100%;
+        border-bottom: 1px solid #e6e6e6;
+    }
+    
+    .header-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px 20px;
+        max-width: 1280px;
+        margin: 0 auto;
+    }
+    
+    .left-nav, .right-nav {
+        flex: 1;
+        display: flex;
+        align-items: center;
+    }
+    
+    .left-nav {
+        justify-content: flex-start;
+        gap: 10px;
+    }
+    
+    .right-nav {
+        justify-content: flex-end;
+    }
+    
+    .menu-button, .search-button {
+        background: none;
+        border: none;
+        font-size: 1.2rem;
+        cursor: pointer;
+        color: #121212;
+        padding: 5px;
+    }
+    
+    .logo {
+        display: flex;
+        justify-content: center;
+    }
+    
+    .bbc-blocks {
+        display: flex;
+    }
+    
+    .block {
+        width: 28px;
+        height: 28px;
+        background-color: #000;
+        color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        font-size: 1rem;
+    }
+    
+    .account-link {
+        text-decoration: none;
+        color: #121212;
+        font-size: 0.9rem;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+    
+    .account-link i {
+        font-size: 1.2rem;
+    }
+    
+    /* Navigation Styles */
+    .main-nav {
+        max-width: 1280px;
+        margin: 0 auto;
+        padding: 0 20px;
+    }
+    
+    .main-nav ul {
+        display: flex;
+        list-style: none;
+        justify-content: space-between;
+        max-width: 1000px;
+        margin: 0 auto;
+    }
+    
+    .main-nav li {
+        position: relative;
+    }
+    
+    .main-nav li.active {
+        border-bottom: 4px solid #000;
+    }
+    
+    .main-nav a {
+        display: block;
+        padding: 12px 5px;
+        text-decoration: none;
+        color: #121212;
+        font-weight: normal;
+        font-size: 0.95rem;
+    }
+    
+    /* Main Content Styles */
+    main {
+        max-width: 1280px;
+        margin: 0 auto;
+        padding: 0 20px;
+    }
+    
+    .content-container {
+        width: 100%;
+    }
+    
+    /* World's Table Section */
+    .worlds-table {
+        margin-top: 25px;
+        padding-bottom: 30px;
+        border-bottom: 1px solid #e6e6e6;
+    }
+    
+    .section-title {
+        font-size: 1.1rem;
+        font-weight: bold;
+        text-transform: uppercase;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+    }
+    
+    .arrow-icon {
+        margin-left: 5px;
+        font-size: 1.3rem;
+    }
+    
+    .feature-article {
+        display: flex;
+        gap: 30px;
+    }
+    
+    .article-image {
+        flex: 1.5; /* Increased flex to make image larger */
+        max-width: 70%; /* Increased max-width for larger image */
+    }
+    
+    .article-image img {
+        width: 100%;
+        height: auto;
+        object-fit: cover;
+    }
+    
+    .article-content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+    
+    .article-title {
+        font-size: 2.2rem; /* Increased font-size */
+        font-weight: bold;
+        margin-bottom: 15px;
+        line-height: 1.2;
+    }
+    
+    .article-title a {
+        color: #121212;
+        text-decoration: none;
+    }
+    
+    .article-description {
+        font-size: 1.1rem; /* Increased font-size */
+        color: #404040;
+        margin-bottom: 25px;
+        line-height: 1.6;
+    }
+    
+    .see-more-button {
+        display: inline-block;
+        padding: 8px 20px;
+        border: 1px solid #121212;
+        text-decoration: none;
+        color: #121212;
+        font-size: 0.9rem;
+        text-align: center;
+        width: fit-content;
+        position: relative; /* Required for pseudo-element overline */
+        transition: all 0.3s ease; /* Smooth transition for hover */
+    }
+    
+    .see-more-button::before {
+        content: '';
+        position: absolute;
+        top: -4px; /* Adjust for overline position */
+        left: 0;
+        width: 0;
+        height: 1px;
+        background: #121212;
+        transition: width 0.3s ease; /* Animate the overline */
+    }
+    
+    .see-more-button:hover {
+        background-color: rgba(0, 0, 0, 0.05); /* Light background on hover */
+    }
+    
+    .see-more-button:hover::before {
+        width: 100%; /* Overline covers the entire button width on hover */
+    }
+    
+    .article-url {
+        margin-top: 20px;
+        font-size: 0.8rem;
+        color: #666;
+    }
+    
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .feature-article {
+            flex-direction: column;
+        }
+        
+        .article-image {
+            max-width: 100%;
+        }
+        
+        .main-nav ul {
+            overflow-x: auto;
+            justify-content: flex-start;
+            gap: 15px;
+        }
+    }
+    </style>
+</head>
+<body>
+    <!-- Top navigation bar (browser-like) intentionally omitted -->
+    
+    <!-- Header and Navigation -->
+    <!-- <header>
+        <div class="header-container">
+            <div class="left-nav">
+                <button class="menu-button" aria-label="Menu">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <button class="search-button" aria-label="Search">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+            
+            <div class="logo">
+                <div class="bbc-blocks">
+                    <div class="block">B</div>
+                    <div class="block">B</div>
+                    <div class="block">C</div>
+                </div>
+            </div>
+            
+            <div class="right-nav">
+                <a href="#" class="account-link">
+                    <i class="fas fa-user-circle"></i>
+                    Your Account
+                </a>
+            </div>
+        </div>
+        
+        <nav class="main-nav">
+            <ul>
+                <li class="active"><a href="#">Home</a></li>
+                <li><a href="#">News</a></li>
+                <li><a href="#">Sport</a></li>
+                <li><a href="#">Business</a></li>
+                <li><a href="#">Innovation</a></li>
+                <li><a href="#">Culture</a></li>
+                <li><a href="#">Arts</a></li>
+                <li><a href="#">Travel</a></li>
+                <li><a href="#">Earth</a></li>
+                <li><a href="#">Audio</a></li>
+                <li><a href="#">Video</a></li>
+                <li><a href="#">Live</a></li>
+            </ul>
+        </nav>
+    </header> -->
+    
+    <main>
+        <div class="content-container">
+            <!-- World's Table Section -->
+            <section class="worlds-table">
+                <h2 class="section-title">WORLD'S TABLE <span class="arrow-icon">›</span></h2>
+                
+                <div class="feature-article">
+                    <div class="article-image">
+                        <img src="https://i1.wp.com/www.honeybeesuite.com/wp-content/uploads/2018/07/Purple-honey-.jpeg?w=599&ssl=1" alt="Purple honey jar from North Carolina">
+                    </div>
+                    <div class="article-content">
+                        <h1 class="article-title">
+                            <a href="#">A rare taste only found in the US South</a>
+                        </h1>
+                        <p class="article-description">
+                            In a quiet corner of North Carolina, bees produce a violet-hued honey so rare and unpredictable that even experts can't explain it – and that's what makes it magical.
+                        </p>
+                        <a href="#" class="see-more-button">See more</a>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+    
+    <script>document.addEventListener('DOMContentLoaded', function() {
+        // Menu button functionality
+        const menuButton = document.querySelector('.menu-button');
+        menuButton.addEventListener('click', function() {
+            alert('Menu clicked');
+            // In a real implementation, this would toggle a mobile menu
+        });
+        
+        // Search button functionality
+        const searchButton = document.querySelector('.search-button');
+        searchButton.addEventListener('click', function() {
+            alert('Search clicked');
+            // In a real implementation, this would show a search overlay
+        });
+        
+        // Navigation item highlighting
+        const navItems = document.querySelectorAll('.main-nav li');
+        navItems.forEach(item => {
+            item.addEventListener('click', function(e) {
+                // Remove active class from all items
+                navItems.forEach(nav => nav.classList.remove('active'));
+                
+                // Add active class to clicked item
+                this.classList.add('active');
+            });
+        });
+        
+        // See more button functionality
+        const seeMoreButton = document.querySelector('.see-more-button');
+        seeMoreButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            window.location.href = document.querySelector('.article-url').textContent.trim();
+        });
+    });
+    </script>
+</body>
+</html>

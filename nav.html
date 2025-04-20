@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>BBC UI Full Page</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      background: #fff;
+      color: #000;
+    }
+
+    /* Header styles */
+    header {
+      display: flex;
+      flex-direction: column;
+      border-bottom: 1px solid #ccc;
+    }
+
+    .top-bar {
+      position: relative;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 20px;
+    }
+
+    .left-icon {
+      display: flex;
+      gap: 5px;
+      align-items: center;
+      padding: 5px 10px;
+      border-radius: 5px;
+      transition: background-color 0.2s;
+      cursor: pointer;
+    }
+
+    .left-icon i {
+      font-size: 24px;
+    }
+
+    .left-icon:hover {
+      background-color: rgba(0, 0, 0, 0.1);
+    }
+
+    .top-bar .logo-container {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .top-bar .logo-container img {
+      height: 100px;
+    }
+
+    .top-bar .right-icon {
+      display: flex;
+      gap: 15px;
+      align-items: center;
+    }
+
+    .top-bar .right-icon button {
+      background: #000;
+      color: #fff;
+      border: none;
+      padding: 5px 15px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .nav {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      padding: 10px 0;
+      border-top: 1px solid #eee;
+      border-bottom: 2px solid #000;
+      flex-wrap: wrap;
+    }
+
+    .nav a {
+      text-decoration: none;
+      color: #000;
+      font-weight: 500;
+      padding: 5px 0;
+    }
+
+    .nav a.active {
+      border-bottom: 3px solid #000;
+    }
+
+    /* Sidebar styles */
+    .side-menu {
+      position: fixed;
+      top: 0;
+      left: -300px;
+      width: 300px;
+      height: 100%;
+      background-color: #fff;
+      color: #000;
+      border-right: 1px solid #ddd;
+      box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+      padding: 15px;
+      transition: left 0.1s ease;
+      z-index: 2000;
+      overflow-y: auto;
+    }
+
+    .side-menu.open {
+      left: 0;
+    }
+
+    .close-btn {
+      font-size: 24px;
+      color: #000;
+      cursor: pointer;
+      margin-bottom: 20px;
+    }
+
+    .search-bar {
+      display: flex;
+      align-items: center;
+      border: 1px solid #ccc;
+      padding: 8px 10px;
+      border-radius: 3px;
+      margin-bottom: 15px;
+    }
+
+    .search-bar input {
+      border: none;
+      outline: none;
+      flex: 1;
+      font-size: 14px;
+    }
+
+    .search-bar i {
+      margin-left: 8px;
+      color: #666;
+    }
+
+    .menu-section {
+      border-top: 1px solid #ddd;
+      padding: 10px 0;
+    }
+
+    .menu-section:first-of-type {
+      border-top: none;
+    }
+
+    .menu-section label {
+      display: flex;
+      justify-content: space-between;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .submenu {
+      display: none;
+      margin-top: 8px;
+      padding-left: 10px;
+    }
+
+    .submenu a {
+      display: block;
+      text-decoration: none;
+      color: #333;
+      padding: 5px 0;
+      font-size: 14px;
+    }
+
+    .menu-section.active .submenu {
+      display: block;
+    }
+
+    .menu-section label i {
+      transition: transform 0.3s ease;
+    }
+
+    .menu-section.active label i {
+      transform: rotate(180deg);
+    }
+
+    .side-menu::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .side-menu::-webkit-scrollbar-thumb {
+      background: #ccc;
+      border-radius: 10px;
+    }
+
+    .side-menu::-webkit-scrollbar-track {
+      background: #f9f9f9;
+    }
+
+    /* Main Content Layout */
+    .main-content {
+      display: grid;
+      grid-template-columns: 1fr 2fr 1fr;
+      gap: 20px;
+      padding: 20px;
+    }
+
+    .left, .right {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .center img {
+      width: 100%;
+      height: auto;
+    }
+
+    .news-card img {
+      width: 100%;
+      height: auto;
+    }
+
+    .news-card {
+      border-bottom: 1px solid #ddd;
+      padding-bottom: 10px;
+    }
+
+    .news-card h3 {
+      margin: 10px 0 5px;
+      font-size: 18px;
+    }
+
+    .news-card p {
+      font-size: 14px;
+      color: #555;
+    }
+
+    .timestamp {
+      font-size: 12px;
+      color: #999;
+      margin-top: 5px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Sidebar Menu -->
+  <div id="side-menu" class="side-menu">
+    <i class="fas fa-times close-btn" id="close-menu"></i>
+
+    <div class="search-bar">
+      <input type="text" placeholder="Search news, topics and more"/>
+      <i class="fas fa-search"></i>
+    </div>
+
+    <!-- Menu sections -->
+    <div class="menu-section active"><label>Home</label></div>
+    <div class="menu-section"><label>News <i class="fas fa-chevron-down"></i></label>
+      <div class="submenu"><a href="#">World</a><a href="#">UK</a><a href="#">Politics</a></div>
+    </div>
+    <div class="menu-section"><label>Sport <i class="fas fa-chevron-down"></i></label>
+      <div class="submenu"><a href="#">Football</a><a href="#">Cricket</a></div>
+    </div>
+    <div class="menu-section"><label>Business <i class="fas fa-chevron-down"></i></label>
+      <div class="submenu"><a href="#">Market</a><a href="#">Tech</a></div>
+    </div>
+    <div class="menu-section"><label>Innovation <i class="fas fa-chevron-down"></i></label>
+      <div class="submenu"><a href="#">Tech News</a><a href="#">Gadgets</a></div>
+    </div>
+    <div class="menu-section"><label>Culture <i class="fas fa-chevron-down"></i></label>
+      <div class="submenu"><a href="#">TV</a><a href="#">Film</a></div>
+    </div>
+    <div class="menu-section"><label>Arts <i class="fas fa-chevron-down"></i></label>
+      <div class="submenu"><a href="#">Design</a><a href="#">Theatre</a></div>
+    </div>
+    <div class="menu-section"><label>Travel <i class="fas fa-chevron-down"></i></label>
+      <div class="submenu"><a href="#">Europe</a><a href="#">Asia</a></div>
+    </div>
+    <div class="menu-section"><label>Earth <i class="fas fa-chevron-down"></i></label>
+      <div class="submenu"><a href="#">Climate</a><a href="#">Nature</a></div>
+    </div>
+    <div class="menu-section"><label>Audio <i class="fas fa-chevron-down"></i></label>
+      <div class="submenu"><a href="#">Podcasts</a></div>
+    </div>
+    <div class="menu-section"><label>Video <i class="fas fa-chevron-down"></i></label>
+      <div class="submenu"><a href="#">Top Videos</a></div>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <header>
+    <div class="top-bar">
+      <div class="left-icon" id="menu-icon">
+        <i class="fas fa-bars"></i>
+        <i class="fas fa-search"></i>
+      </div>
+
+      <div class="logo-container">
+        <img src="./assets/images/bbc-2-logo-png-transparent.png" alt="BBC Logo">
+      </div>
+
+      <div class="right-icon">
+        <button>Register</button>
+        <span>Sign In</span>
+      </div>
+    </div>
+
+    <nav class="nav">
+      <a href="#" class="active">Home</a>
+      <a href="#">News</a>
+      <a href="#">Sport</a>
+      <a href="#">Business</a>
+      <a href="#">Innovation</a>
+      <a href="#">Culture</a>
+      <a href="#">Arts</a>
+      <a href="#">Travel</a>
+      <a href="#">Earth</a>
+      <a href="#">Audio</a>
+      <a href="#">Video</a>
+      <a href="#">Live</a>
+    </nav>
+  </header>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <div class="left">
+      <div class="news-card">
+        <img src="https://thumbs.dreamstime.com/b/mixed-group-around-table-business-meeting-21283913.jpg" alt="Meeting">
+        <h3>US senator meets man mistakenly deported to El Salvador</h3>
+        <p>But Salvadoran President Bukele says Kilmar Ábrego García - who is at the centre of a US court battle - will stay in custody.</p>
+        <div class="timestamp">3 hrs ago | World</div>
+      </div>
+      <div class="news-card">
+        <img src="https://img.freepik.com/premium-photo/group-soldiers-walking-through-forest-this-image-can-be-used-depict-military-training-exercises-scene-from-war-movie-as-representation-teamwork-determination_153912-23645.jpg" alt="Military">
+        <h3>US will 'move on' from Ukraine peace talks if no progress soon</h3>
+        <p>The US Secretary of State's comments come as Ukraine says it took a first step towards signing a minerals deal with the US.</p>
+        <div class="timestamp">34 mins ago | World</div>
+      </div>
+    </div>
+
+    <div class="center">
+      <img src="assets/images/b67a7f40-1c2e-11f0-b1b3-7358f8d35a35.jpg.webp" alt="Headline" />
+      <h2 style="margin: 15px 0; font-size: 24px;">US will 'move on' from Ukraine peace talks if no progress soon</h2>
+      <p style="font-size: 16px; color: #333;">The US Secretary of State's comments come as Ukraine says it took a first step towards signing a minerals deal with the US.</p>
+    </div>
+
+    <div class="right">
+      <div class="news-card">
+        <h3>Five takeaways from Canada party leaders' big TV debate</h3>
+        <p>There were two ghosts in the room during Canada's federal election debate - Justin Trudeau and Donald Trump.</p>
+        <div class="timestamp">3 hrs ago | US & Canada</div>
+      </div>
+      <div class="news-card">
+        <h3>'My home is worth millions, but my kids can't afford to live here'</h3>
+        <p>Housing has taken a back seat in Canada's election to Donald Trump's tariffs, but advocates argue the affordability crisis is just as disruptive.</p>
+        <div class="timestamp">13 hrs ago | US & Canada</div>
+      </div>
+      <div class="news-card">
+        <h3>Watch: Olympic legend leaves parents in her dust at school sports day</h3>
+        <p>The third-fastest woman in history, Shelly-Ann Fraser-Pryce, took part in sports day at her son's school in Jamaica.</p>
+        <div class="timestamp">3 hrs ago | Latin America</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- JS for Menu -->
+  <script>
+    const menuIcon = document.getElementById('menu-icon');
+    const sideMenu = document.getElementById('side-menu');
+    const closeBtn = document.getElementById('close-menu');
+
+    menuIcon.addEventListener('click', () => {
+      sideMenu.classList.add('open');
+    });
+
+    closeBtn.addEventListener('click', () => {
+      sideMenu.classList.remove('open');
+    });
+
+    const sections = document.querySelectorAll('.menu-section');
+    sections.forEach(section => {
+      section.querySelector('label').addEventListener('click', () => {
+        section.classList.toggle('active');
+      });
+    });
+  </script>
+
+</body>
+</html>

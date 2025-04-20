@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>News UI Clone</title>
+    <style> 
+        .container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            padding: 20px;
+        }
+        .section {
+            border-top: 2px solid #000;
+            padding-top: 10px;
+        }
+        .section h2 {
+            font-size: 1rem;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+        .article {
+            margin-bottom: 20px;
+        }
+        .article img {
+            width: 100%;
+            height: auto;
+        }
+        .article h3 {
+            font-size: 1rem;
+            margin: 10px 0 5px 0;
+        }
+        .article p {
+            font-size: 0.9rem;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        .timestamp {
+            font-size: 0.8rem;
+            color: gray;
+        }
+        .live {
+            color: red;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- US & Canada News -->
+        <div class="section">
+            <h2>US & Canada News</h2>
+            <div class="article">
+                <img src="https://wtop.com/wp-content/uploads/2025/04/Maryland_Deportation_Error_07053-scaled.jpg" alt="Bring Kilmar Home">
+                <h3>Who is the man in middle of Maryland deportation case?</h3>
+                <p>Officials in the US and El Salvador have been unwilling to return the man home, sparking a legal battle.</p>
+                <div class="timestamp">3 hrs ago | US & Canada</div>
+            </div>
+            <div class="article">
+                <h3>Menendez brothers' resentencing bid delayed after contentious day in court</h3>
+                <div class="timestamp">16 hrs ago | US & Canada</div>
+            </div>
+        </div>
+
+        <!-- More World News -->
+        <div class="section">
+            <h2>More World News</h2>
+            <div class="article">
+                <img src="https://th.bing.com/th?id=OIF.Dqm%2fxPSpJOd%2bdmsUDEBUkQ&rs=1&pid=ImgDetMain" alt="KFC Protest">
+                <h3>One dead after protests against KFC branches in Pakistan</h3>
+                <p>Protesters, angry at the war in Gaza, have claimed KFC is a symbol of the United States and its ally Israel.</p>
+                <div class="timestamp">18 mins ago | Asia</div>
+            </div>
+            <div class="article">
+                <h3>'Child in arms, luggage on my head, I fled Sudan camp for safety'</h3>
+                <div class="timestamp">51 mins ago | Africa</div>
+            </div>
+        </div>
+
+        <!-- Sport -->
+        <div class="section">
+            <h2>Sport</h2>
+            <div class="article">
+                <img src="https://s.yimg.com/ny/api/res/1.2/9gLUvqNsQiAEy5n7Xu7a5A--/YXBwaWQ9aGlnaGxhbmRlcjt3PTk2MDtoPTY2OA--/https://media.zenfs.com/en/get_german_football_news_articles_128/40dcdd1f26979c93afcfc0c2630ac09b" alt="Xabi Alonso">
+                <h3>'Not the time to discuss future' - Alonso on Real Madrid links</h3>
+                <p>Xabi Alonso says it is "not a good time" to discuss his future after the Bayer Leverkusen boss was linked with Real Madrid.</p>
+                <div class="timestamp">45 mins ago | European Football</div>
+            </div>
+            <div class="article">
+                <h3><span class="live">LIVE</span> Championship: Sheff Utd host Cardiff after Burnley win to go top</h3>
+            </div>
+        </div>
+
+        <!-- Business -->
+        <div class="section">
+            <h2>Business</h2>
+            <div class="article">
+                <img src="https://th.bing.com/th/id/OIP.IfuYum2L6fcMzVqYHHdaVgHaEo?rs=1&pid=ImgDetMain" alt="Cargo Ships">
+                <h3>US lays out plans to hit Chinese ships with port fees</h3>
+                <p>The charges will start in 180 days and rise in the coming years.</p>
+                <div class="timestamp">6 hrs ago | Business</div>
+            </div>
+            <div class="article">
+                <h3>Nvidia: The AI chip giant caught between US and China</h3>
+                <div class="timestamp">8 hrs ago | Asia</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
